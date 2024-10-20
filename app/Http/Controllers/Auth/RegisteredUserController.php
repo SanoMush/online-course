@@ -39,7 +39,7 @@ class RegisteredUserController extends Controller
         ]);
 
         //Proses upload file photo kepada projek laravel
-        if($request->hashFile('avatar')){
+        if($request->hasFile('avatar')){
             $avatarPath = $request->file('avatar')->store('avatars','public');
         }else{
             $avatarPath= 'images/avatar-default.png';
@@ -49,7 +49,7 @@ class RegisteredUserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'occupation' => $request->occupation,
-            'avatar' => $request->avatarPath,
+            'avatar' => $avatarPath,
             'password' => Hash::make($request->password),
         ]);
 
