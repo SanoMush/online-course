@@ -16,4 +16,9 @@ class FrontController extends Controller
         return view ('front.details');
     }
 
+    public function checkout()
+    {
+        return view('front.checkout');
+    }
+
 }
