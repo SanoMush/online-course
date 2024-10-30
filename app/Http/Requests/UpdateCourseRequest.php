@@ -11,7 +11,7 @@ class UpdateCourseRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return $this->user()->hasAnyRole(['teacher','owner']);
     }
 
     /**
@@ -23,6 +23,12 @@ class UpdateCourseRequest extends FormRequest
     {
         return [
             //
+            'name' => 'required|string|max:255',
+            'path_trailer' => 'required|string|max:255',
+            'about' => 'required|string',
+            'category_id' => 'required|integer',
+            'thumbnail' => 'sometimes|image|mimes:png,jpg,svg',
+            'course_keypoints.*' => 'required|string|max:255',
         ];
     }
 }
