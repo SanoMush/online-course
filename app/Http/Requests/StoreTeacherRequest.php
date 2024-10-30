@@ -11,7 +11,7 @@ class StoreTeacherRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return $this->user()->hasAnyRole(['owner']);
     }
 
     /**
@@ -23,6 +23,7 @@ class StoreTeacherRequest extends FormRequest
     {
         return [
             //
+            'email'=>'required|string|email|max:255',
         ];
     }
 }
