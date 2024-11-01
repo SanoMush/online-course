@@ -28,11 +28,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // Must Login Before Checkout
-    Route::get('/checkout', [FrontController::class ,'checkout'])->name('front.checkout')->middleware('role:studennt');
+    Route::get('/checkout', [FrontController::class ,'checkout'])->name('front.checkout')->middleware('role:student');
     Route::post('/checkout/store', [FrontController::class ,'checkout_store'])->name('front.checkout.store')->middleware('role:student');
 
     //domain.com/learning/100/5 = belajar kotlin dasar
-    Route::get('/learning{course}/{CourseVideoId}', [FrontController::class,'learning'])->name('fornt.learning')
+    Route::get('/learning/{course}/{CourseVideoId}', [FrontController::class,'learning'])->name('front.learning')
     ->middleware('role:student|teacher|owner');
 
     Route::prefix('admin')->name('admin.')->group(function(){
