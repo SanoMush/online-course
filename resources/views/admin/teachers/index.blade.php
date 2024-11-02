@@ -4,16 +4,17 @@
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 {{ __('Manage Teachers') }}
             </h2>
-            <a href="#" class="font-bold py-4 px-6 bg-indigo-700 text-white rounded-full">
+            <a href="{{route('admin.teachers.create')}}" class="font-bold py-4 px-6 bg-indigo-700 text-white rounded-full">
                 Add New
             </a>
         </div>
     </x-slot>
     <div>
-        
+
     </div>
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            @forelse($teachers as $teacher)
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-10 flex flex-col gap-y-5">
                 <div class="item-card flex flex-row justify-between items-center">
                     <div class="flex flex-row items-center gap-x-3">
@@ -21,7 +22,7 @@
                         <div class="flex flex-col">
                             <h3 class="text-indigo-950 text-xl font-bold">Villio Jack</h3>
                         </div>
-                    </div> 
+                    </div>
                     <div class="hidden md:flex flex-col">
                         <p class="text-slate-500 text-sm">Date</p>
                         <h3 class="text-indigo-950 text-xl font-bold">12 Jan 2024</h3>
@@ -36,6 +37,11 @@
                         </form>
                     </div>
                 </div>
+                @empty
+                @endforelse
+                <p>
+                    Belum ada guru tersedia
+                </p>
             </div>
         </div>
     </div>
