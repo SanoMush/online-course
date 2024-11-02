@@ -7,6 +7,7 @@ use App\Models\Teacher;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 
 class TeacherController extends Controller
 {
@@ -17,6 +18,7 @@ class TeacherController extends Controller
     {
         //
         $teachers = Teacher::orderBy('id','desc')->get();
+        
 
         return view('admin.teachers.index', [
             'teachers' => $teachers
@@ -60,7 +62,7 @@ class TeacherController extends Controller
             $validated['user_id'] = $user->id;
             $validated['is_active'] = true;
 
-            Teacher::created($validated);
+            Teacher::create($validated);
 
             if($user->hasRole('student')){
                 $user->removeRole('student');
@@ -102,5 +104,20 @@ class TeacherController extends Controller
     public function destroy(Teacher $teacher)
     {
         //
+        try{
+            $teacher->delete();
+
+            $user=\App\Models\User::find($teacher->user_id);
+            $user->removeRole('teacher');
+            $user->assignRole('student');
+            
+            return redirect()->back();
+        }catch(\Exception $e){
+            DB::rollBack();
+            $error = ValidationException::withMessages([
+                'system_error'=>['System error!' . $e->getMessage()],
+            ]);
+            throw $error;
+        }
     }
 }
