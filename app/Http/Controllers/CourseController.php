@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Course;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CourseController extends Controller
 {
@@ -13,6 +15,19 @@ class CourseController extends Controller
     public function index()
     {
         //
+
+        $user = Auth::user();
+        $query = Course::with(['category','teacher','students'])->orderByDesc('id');
+
+        if($user->hasRole('teacher')){
+            $query->whereHas('teacher' , function($query)use($user){
+                $query->where('user_id', $user->id);
+            });
+        }
+
+        $course = $query->paginate(10);
+
+        return view('admin.courses.index', compact('courses'));
     }
 
     /**
@@ -21,6 +36,8 @@ class CourseController extends Controller
     public function create()
     {
         //
+        $categories =Category::all();
+        return view('admin.courses.create', compact('categories'));
     }
 
     /**
