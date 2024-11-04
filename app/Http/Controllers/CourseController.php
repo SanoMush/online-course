@@ -25,7 +25,7 @@ class CourseController extends Controller
             });
         }
 
-        $course = $query->paginate(10);
+        $courses = $query->paginate(10);
 
         return view('admin.courses.index', compact('courses'));
     }
